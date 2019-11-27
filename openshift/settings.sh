@@ -15,7 +15,7 @@ export skip_git_overrides=""
 export builds=${builds:-""}
 
 # The images to be tagged after build
-export images=${images:-"DemoJenkinsDockerCore"}
+export images=${images:-"demojenkinsdockercore"}
 
 # The routes for the project
-export routes=${routes:-"DemoJenkinsDockerCore"}
+export routes=${routes:-"demojenkinsdockercore"}

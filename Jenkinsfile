@@ -1,5 +1,5 @@
 // Edit your app's name below
-def APP_NAME = 'DemoJenkinsDockerCore'
+def APP_NAME = 'demojenkinsdockercore'
 
 // Edit your environment TAG names below
 def TAG_NAMES = [

@@ -89,7 +89,7 @@
         "displayName": "Name",
         "description": "The name assigned to all of the resources defined in this template.",
         "required": true,
-        "value": "DemoJenkinsDockerCore"
+        "value": "demojenkinsdockercore"
       },
       {
         "name": "GIT_REPO_URL",
@@ -138,7 +138,7 @@
         "displayName": "DotNet Startup Project",
         "description": "The path to the startup project for the .Net application.",
         "required": true,
-        "value": "DemoJenkinsDockerCore.API"
+        "value": "DemoJenkinsDockerCore"
       },
       {
         "name": "OUTPUT_IMAGE_TAG",

@@ -1,23 +1,23 @@
 node('master') {
     stage('Code Quality') {
         echo "Running SonarQube static code analysis."
-        openshiftBuild bldCfg: 'DemoJenkinsDockerCore-sonar-master', showBuildLogs: 'true'
+        openshiftBuild bldCfg: 'demojenkinsdockercore-sonar-master', showBuildLogs: 'true'
     }
 
     /*stage('Dependency Security Check') {
         echo "Running Snyk analysis of dependencies"
-        openshiftBuild bldCfg: 'DemoJenkinsDockerCore-snyk-master', showBuildLogs: 'true'
+        openshiftBuild bldCfg: 'demojenkinsdockercore-snyk-master', showBuildLogs: 'true'
     }*/
 
     stage('Build Image') {
         echo "Building..."
-        openshiftBuild bldCfg: 'DemoJenkinsDockerCore-master', showBuildLogs: 'true'
-        openshiftTag destStream: 'DemoJenkinsDockerCore', verbose: 'true', destTag: 'MASTER-$BUILD_ID', srcStream: 'DemoJenkinsDockerCore-master', srcTag: 'latest'
+        openshiftBuild bldCfg: 'demojenkinsdockercore-master', showBuildLogs: 'true'
+        openshiftTag destStream: 'demojenkinsdockercore', verbose: 'true', destTag: 'MASTER-$BUILD_ID', srcStream: 'demojenkinsdockercore-master', srcTag: 'latest'
     }
 
     stage('Deploy on Test') {
         echo "Deploying to test..."
-        openshiftTag destStream: 'DemoJenkinsDockerCore', verbose: 'true', destTag: 'test', srcStream: 'DemoJenkinsDockerCore', srcTag: 'MASTER-$BUILD_ID'
+        openshiftTag destStream: 'demojenkinsdockercore', verbose: 'true', destTag: 'test', srcStream: 'demojenkinsdockercore', srcTag: 'MASTER-$BUILD_ID'
     }
 }
 
@@ -25,7 +25,7 @@ timeout(600) {
   stage('Deploy on Prod') {
       input "Deploy to Prod?"
       node('master') {
-          openshiftTag destStream: 'DemoJenkinsDockerCore', verbose: 'true', destTag: 'prod', srcStream: 'DemoJenkinsDockerCore', srcTag: 'test'
+          openshiftTag destStream: 'demojenkinsdockercore', verbose: 'true', destTag: 'prod', srcStream: 'demojenkinsdockercore', srcTag: 'test'
       }
   }
 }
