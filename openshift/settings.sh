@@ -1,4 +1,4 @@
-export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-ntu9uh}
+export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-ifttgq}
 export GIT_URI=${GIT_URI:-"https://github.com/parulmishra/DemoJenkinsDockerCore.git"}
 export GIT_REF=${GIT_REF:-"master"}
 
