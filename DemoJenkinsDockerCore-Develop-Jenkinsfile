@@ -1,0 +1,19 @@
+node('master') {
+    stage('Build Image') {
+        echo "Building..."
+        openshiftBuild bldCfg: 'DemoJenkinsDockerCore-develop', showBuildLogs: 'true'
+        openshiftTag destStream: 'DemoJenkinsDockerCore', verbose: 'true', destTag: 'DEVELOP-$BUILD_ID', srcStream: 'DemoJenkinsDockerCore-develop', srcTag: 'latest'
+    }
+
+    stage('Deploy on Dev') {
+        echo "Deploying to dev..."
+        openshiftTag destStream: 'DemoJenkinsDockerCore', verbose: 'true', destTag: 'dev', srcStream: 'DemoJenkinsDockerCore', srcTag: 'DEVELOP-$BUILD_ID'
+    }
+
+    timeout(600) {
+        stage('Deploy on Test') {
+            input "Deploy to test?"
+          openshiftTag destStream: 'DemoJenkinsDockerCore', verbose: 'true', destTag: 'test', srcStream: 'DemoJenkinsDockerCore', srcTag: 'dev'
+      }
+    }
+}
