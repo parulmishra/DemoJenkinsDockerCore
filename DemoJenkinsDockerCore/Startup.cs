@@ -55,7 +55,8 @@ namespace DemoJenkinsDockerCore
 
             app.UseHealthChecks("/hc", new HealthCheckOptions { AllowCachingResponses = false });
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
