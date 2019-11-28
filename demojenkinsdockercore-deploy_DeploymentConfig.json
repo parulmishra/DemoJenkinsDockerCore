@@ -1,0 +1,169 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+                "annotations": {
+                    "description": "Exposes and load balances the application pods."
+                },
+                "labels": {
+                    "app": "demojenkinsdockercore",
+                    "template": "demojenkinsdockercore-deployment",
+                    "tier": "backend"
+                },
+                "name": "demojenkinsdockercore"
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "port": 8080,
+                        "protocol": "TCP",
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "name": "demojenkinsdockercore"
+                },
+                "sessionAffinity": "None",
+                "type": "ClusterIP"
+            }
+        },
+        {
+            "apiVersion": "route.openshift.io/v1",
+            "kind": "Route",
+            "metadata": {
+                "labels": {
+                    "app": "demojenkinsdockercore",
+                    "template": "demojenkinsdockercore-deployment",
+                    "tier": "backend"
+                },
+                "name": "demojenkinsdockercore"
+            },
+            "spec": {
+                "host": "demojenkinsdockercore-ifttgq-dev.pathfinder.gov.bc.ca",
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "tls": {
+                    "insecureEdgeTerminationPolicy": "Redirect",
+                    "termination": "edge"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "demojenkinsdockercore",
+                    "weight": 100
+                }
+            }
+        },
+        {
+            "apiVersion": "apps.openshift.io/v1",
+            "kind": "DeploymentConfig",
+            "metadata": {
+                "annotations": {
+                    "description": "Defines how to deploy demojenkinsdockercore"
+                },
+                "labels": {
+                    "app": "demojenkinsdockercore",
+                    "template": "demojenkinsdockercore-deployment",
+                    "tier": "backend"
+                },
+                "name": "demojenkinsdockercore"
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "name": "demojenkinsdockercore"
+                },
+                "strategy": {
+                    "type": "Rolling"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "demojenkinsdockercore"
+                        },
+                        "name": "demojenkinsdockercore"
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "env": [
+                                    {
+                                        "name": "ASPNETCORE_ENVIRONMENT",
+                                        "value": "Development"
+                                    }
+                                ],
+                                "image": "",
+                                "livenessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/hc",
+                                        "port": 8080,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "name": "demojenkinsdockercore",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "readinessProbe": {
+                                    "failureThreshold": 3,
+                                    "httpGet": {
+                                        "path": "/hc",
+                                        "port": 8080,
+                                        "scheme": "HTTP"
+                                    },
+                                    "initialDelaySeconds": 10,
+                                    "periodSeconds": 10,
+                                    "successThreshold": 1,
+                                    "timeoutSeconds": 1
+                                },
+                                "resources": {
+                                    "limits": {
+                                        "cpu": "1",
+                                        "memory": "4Gi"
+                                    },
+                                    "requests": {
+                                        "cpu": "100m",
+                                        "memory": "2Gi"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "demojenkinsdockercore"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "demojenkinsdockercore:dev",
+                                "namespace": "ifttgq-tools"
+                            }
+                        },
+                        "type": "ImageChange"
+                    }
+                ]
+            }
+        }
+    ]
+}

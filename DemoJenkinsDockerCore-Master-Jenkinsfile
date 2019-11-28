@@ -1,10 +1,10 @@
 node('master') {
-    stage('Code Quality') {
+    /*stage('Code Quality') {
         echo "Running SonarQube static code analysis."
         openshiftBuild bldCfg: 'demojenkinsdockercore-sonar-master', showBuildLogs: 'true'
     }
 
-    /*stage('Dependency Security Check') {
+    stage('Dependency Security Check') {
         echo "Running Snyk analysis of dependencies"
         openshiftBuild bldCfg: 'demojenkinsdockercore-snyk-master', showBuildLogs: 'true'
     }*/
